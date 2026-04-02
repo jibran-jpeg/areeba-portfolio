@@ -632,6 +632,33 @@ body {
 }
 .btn-primary:active { transform: scale(0.97); }
 
+.btn-secondary {
+  background: transparent;
+  color: var(--secondary); padding: 12px 28px;
+  border-radius: 9999px; border: 2px solid var(--secondary);
+  font-weight: 700; font-size: 1rem;
+  font-family: 'Manrope', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 210, 255, 0.1);
+  transition: all 0.3s;
+  display: inline-flex; align-items: center; gap: 8px;
+  text-decoration: none;
+  position: relative; overflow: hidden;
+  z-index: 1;
+}
+.btn-secondary::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--secondary);
+  opacity: 0; z-index: -1;
+  transition: opacity 0.3s;
+}
+.btn-secondary:hover::before { opacity: 1; }
+.btn-secondary:hover {
+  color: var(--surface);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 16px 40px var(--glow-sec);
+}
+.btn-secondary:active { transform: scale(0.97); }
 /* ===== FAB ===== */
 .fab {
   position: fixed; bottom: 100px; right: 24px;
@@ -871,7 +898,7 @@ footer a:hover { color: var(--primary); }
   .section-title { font-size: 1.4rem; }
   .bio-card { padding: 18px; }
   .contact-card { padding: 18px; }
-  .btn-primary { padding: 12px 24px; font-size: 0.9rem; }
+  .btn-primary, .btn-secondary { padding: 12px 24px; font-size: 0.9rem; }
   .exp-card { padding: 18px; }
   .loader-text { font-size: 1.4rem; }
 }
