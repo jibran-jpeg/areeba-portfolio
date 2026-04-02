@@ -28,15 +28,16 @@
 <canvas id="particles-canvas"></canvas>
 
 <!-- SIDEBAR (Desktop) -->
-<aside class="sidebar" style="position:fixed;left:0;top:0;bottom:0;width:260px;z-index:40;padding-top:80px;">
-  <div style="display:flex;flex-direction:column;align-items:center;padding:0 24px 28px;">
-    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg, var(--primary), var(--secondary));padding:3px;box-shadow:0 8px 24px var(--glow-primary);margin-bottom:16px;transition:transform 0.4s;" class="magnetic">
-      <img src="areeba-1.jpg" alt="Areeba Siraj" style="width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid var(--surface);"/>
+<aside class="sidebar" style="position:fixed;left:0;top:0;bottom:0;width:260px;z-index:40;padding-top:72px;">
+  <div style="display:flex;flex-direction:column;align-items:center;padding:0 24px 20px;">
+    <div class="sidebar-avatar-ring">
+      <img src="areeba-1.jpg" alt="Areeba Siraj"/>
     </div>
-    <h2 style="font-family:'Epilogue';font-size:1.3rem;font-weight:900;color:var(--primary-light);text-shadow:0 0 12px var(--glow-primary);">Areeba Siraj</h2>
-    <p style="font-size:0.7rem;color:var(--text-secondary);letter-spacing:0.12em;text-transform:uppercase;margin-top:6px;font-weight:700;">Social Media Executive</p>
+    <h2 class="sidebar-name">Areeba Siraj</h2>
+    <p class="sidebar-role">Social Media Executive</p>
+    <div class="sidebar-sep"></div>
   </div>
-  <nav style="display:flex;flex-direction:column;gap:4px;padding:0 16px;flex:1;">
+  <nav style="display:flex;flex-direction:column;gap:2px;padding:0 14px;flex:1;">
     <a href="#" class="nav-link active"><span class="material-symbols-outlined">home</span>Home</a>
     <a href="#about" class="nav-link"><span class="material-symbols-outlined">person</span>About</a>
     <a href="#experience" class="nav-link"><span class="material-symbols-outlined">work</span>Experience</a>
@@ -44,8 +45,8 @@
     <a href="#education" class="nav-link"><span class="material-symbols-outlined">school</span>Education</a>
     <a href="#contact" class="nav-link"><span class="material-symbols-outlined">contact_page</span>Contact</a>
   </nav>
-  <div style="padding:16px 24px;">
-    <a href="#contact" class="btn-primary" style="width:100%;justify-content:center;font-size:0.9rem;padding:12px 0;">
+  <div class="sidebar-cta">
+    <a href="#contact" class="btn-primary">
       Let's Create <span class="material-symbols-outlined" style="font-size:1.1rem;">arrow_forward</span>
     </a>
   </div>
@@ -91,10 +92,10 @@
             Let's Connect <span class="material-symbols-outlined" style="font-size:1.2rem;">arrow_forward</span>
           </a>
           <div style="display:flex;">
-            <div style="width:40px;height:40px;border-radius:50%;border:2px solid white;background:var(--tertiary-light);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <div style="width:40px;height:40px;border-radius:50%;border:2px solid rgba(255,255,255,0.1);background:var(--tertiary-light);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);">
               <span class="material-symbols-outlined" style="font-size:1rem;color:var(--tertiary);font-variation-settings:'FILL' 1;">favorite</span>
             </div>
-            <div style="width:40px;height:40px;border-radius:50%;border:2px solid white;background:var(--secondary-light);display:flex;align-items:center;justify-content:center;margin-left:-10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <div style="width:40px;height:40px;border-radius:50%;border:2px solid rgba(255,255,255,0.1);background:var(--secondary-light);display:flex;align-items:center;justify-content:center;margin-left:-10px;box-shadow:0 2px 8px rgba(0,0,0,0.3);">
               <span class="material-symbols-outlined" style="font-size:1rem;color:var(--secondary);font-variation-settings:'FILL' 1;">brush</span>
             </div>
           </div>
@@ -165,8 +166,25 @@
             <span class="tag">Social Media Strategy</span><span class="tag">Content Planning</span>
           </div>
         </div>
-        <!-- Card 2 -->
+        <!-- Card 2 (Upwork) -->
         <div class="exp-card reveal" style="transform:rotate(1deg);transition-delay:150ms;">
+          <span class="material-symbols-outlined pin">push_pin</span>
+          <p class="exp-date">2022 - Present</p>
+          <h3 style="font-family:'Epilogue';font-weight:800;font-size:1.15rem;margin:8px 0 12px;line-height:1.3;">Upwork &bull; Copywriter &amp; Social Media Strategist</h3>
+          <ul style="font-size:0.78rem;color:var(--text-secondary);line-height:1.7;padding-left:16px;list-style:disc;">
+            <li>Designed and developed pitch decks for clients from the US, APAC, and the Middle East.</li>
+            <li>Edited and proofread content to ensure grammatical accuracy, tone consistency, and adherence to client briefs.</li>
+            <li>Crafted compelling content for websites, product descriptions, and marketing bulletin.</li>
+            <li>Analyzed brand's advertising campaigns to develop insights on target audience, messaging, and creative strategies.</li>
+            <li>Created visually compelling and branded content using tools like Canva.</li>
+            <li>Wrote compelling captions, taglines, and call-to-actions that drove website clicks.</li>
+          </ul>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;">
+            <span class="tag">Copywriting</span><span class="tag">Content Strategy</span>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="exp-card reveal" style="transform:rotate(-1deg);transition-delay:300ms;">
           <span class="material-symbols-outlined pin">push_pin</span>
           <p class="exp-date">07/2025 - 09/2025</p>
           <h3 style="font-family:'Epilogue';font-weight:800;font-size:1.15rem;margin:8px 0 12px;line-height:1.3;">Excelerate &bull; Digital Marketing Intern</h3>
@@ -179,8 +197,8 @@
             <span class="tag">SEO</span><span class="tag">Audience Insights</span>
           </div>
         </div>
-        <!-- Card 3 -->
-        <div class="exp-card reveal" style="transform:rotate(-1deg);transition-delay:300ms;">
+        <!-- Card 4 -->
+        <div class="exp-card reveal" style="transform:rotate(2deg);transition-delay:450ms;">
           <span class="material-symbols-outlined pin">push_pin</span>
           <p class="exp-date">07/2025 - 08/2025</p>
           <h3 style="font-family:'Epilogue';font-weight:800;font-size:1.15rem;margin:8px 0 12px;line-height:1.3;">Meezan Bank &bull; Sales &amp; Marketing Intern</h3>
