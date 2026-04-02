@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Areeba Siraj | Social Media Executive — Portfolio</title>
+  <meta name="description" content="Areeba Siraj — Ambitious Social Media Executive and Copywriter based in Karachi, Pakistan. Portfolio showcasing digital marketing, SEO, and content strategy expertise."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,700;0,800;0,900;1,700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body class="graph-paper">
+
+<!-- LOADING SCREEN -->
+<div class="loader" id="loader">
+  <div class="loader-text">Areeba Siraj</div>
+  <div class="loader-bar"><div class="loader-bar-inner"></div></div>
+</div>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-indicator" id="scrollIndicator"></div>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- PARTICLES -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- SIDEBAR (Desktop) -->
+<aside class="sidebar" style="position:fixed;left:0;top:0;bottom:0;width:260px;z-index:40;padding-top:80px;">
+  <div style="display:flex;flex-direction:column;align-items:center;padding:0 24px 28px;">
+    <div style="width:72px;height:72px;border-radius:50%;overflow:hidden;border:3px solid white;box-shadow:0 4px 16px rgba(0,0,0,0.1);margin-bottom:12px;">
+      <img src="areeba-1.jpg" alt="Areeba Siraj" style="width:100%;height:100%;object-fit:cover;"/>
+    </div>
+    <h2 style="font-family:'Epilogue';font-size:1.2rem;font-weight:800;color:var(--primary);">Areeba Siraj</h2>
+    <p style="font-size:0.7rem;color:var(--text-secondary);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;">Social Media Executive</p>
+  </div>
+  <nav style="display:flex;flex-direction:column;gap:4px;padding:0 16px;flex:1;">
+    <a href="#" class="nav-link active"><span class="material-symbols-outlined">home</span>Home</a>
+    <a href="#about" class="nav-link"><span class="material-symbols-outlined">person</span>About</a>
+    <a href="#experience" class="nav-link"><span class="material-symbols-outlined">work</span>Experience</a>
+    <a href="#skills" class="nav-link"><span class="material-symbols-outlined">psychology</span>Skills</a>
+    <a href="#education" class="nav-link"><span class="material-symbols-outlined">school</span>Education</a>
+    <a href="#contact" class="nav-link"><span class="material-symbols-outlined">contact_page</span>Contact</a>
+  </nav>
+  <div style="padding:16px 24px;">
+    <a href="#contact" class="btn-primary" style="width:100%;justify-content:center;font-size:0.9rem;padding:12px 0;">
+      Let's Create <span class="material-symbols-outlined" style="font-size:1.1rem;">arrow_forward</span>
+    </a>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="sidebar-layout" style="padding-top:40px;padding-bottom:120px;">
+  <div class="container">
+
+    <!-- ======= HERO SECTION ======= -->
+    <section style="padding:60px 0 80px;" id="hero">
+      <div class="hero-flex">
+      <!-- Blobs -->
+      <div class="blob" style="width:300px;height:300px;background:var(--primary);top:-40px;right:0;animation-delay:0s;"></div>
+      <div class="blob" style="width:250px;height:250px;background:var(--secondary-light);top:100px;right:120px;animation-delay:3s;"></div>
+      <div class="blob" style="width:200px;height:200px;background:var(--tertiary-light);bottom:0;left:30%;animation-delay:5s;"></div>
+
+      <!-- Polaroid Photo -->
+      <div class="reveal-left" style="flex:1;max-width:380px;position:relative;width:100%;">
+        <div class="polaroid magnetic" id="heroPolaroid">
+          <div class="tape"></div>
+          <img src="areeba-2.jpg" alt="Areeba Siraj portrait" style="filter:sepia(0.08);"/>
+          <div class="polaroid-label">Areeba Siraj</div>
+        </div>
+        <!-- Decorative floating icons -->
+        <span class="material-symbols-outlined float" style="position:absolute;top:-32px;right:-16px;font-size:2.5rem;color:var(--tertiary);--rot:12deg;font-variation-settings:'FILL' 1;">star</span>
+        <span class="material-symbols-outlined float-delay" style="position:absolute;bottom:-16px;left:-32px;font-size:3rem;color:var(--secondary);--rot:-12deg;">filter_vintage</span>
+      </div>
+
+      <!-- Hero Text -->
+      <div class="reveal-right" style="flex:1.2;">
+        <div style="display:inline-block;background:var(--secondary-light);padding:8px 24px;border-radius:99px;transform:rotate(-1deg);box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:20px;">
+          <span style="font-family:'Epilogue';font-weight:700;color:var(--secondary);font-size:1.1rem;">Hello there! 👋</span>
+        </div>
+        <h1 class="hero-title" style="margin-top:16px;">
+          Social Media<br/><span class="accent highlight">Executive</span><span class="typing-cursor" id="typingCursor"></span>
+        </h1>
+        <p style="font-size:1.15rem;color:var(--text-secondary);line-height:1.8;max-width:480px;margin-top:20px;word-wrap:break-word;">
+          Ambitious marketing professional with a strong foundation in digital marketing and copywriting, eager to apply creative and analytical skills to support business growth.
+        </p>
+        <div style="display:flex;gap:16px;align-items:center;margin-top:28px;flex-wrap:wrap;">
+          <a href="#contact" class="btn-primary magnetic">
+            Let's Connect <span class="material-symbols-outlined" style="font-size:1.2rem;">arrow_forward</span>
+          </a>
+          <div style="display:flex;">
+            <div style="width:40px;height:40px;border-radius:50%;border:2px solid white;background:var(--tertiary-light);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+              <span class="material-symbols-outlined" style="font-size:1rem;color:var(--tertiary);font-variation-settings:'FILL' 1;">favorite</span>
+            </div>
+            <div style="width:40px;height:40px;border-radius:50%;border:2px solid white;background:var(--secondary-light);display:flex;align-items:center;justify-content:center;margin-left:-10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+              <span class="material-symbols-outlined" style="font-size:1rem;color:var(--secondary);font-variation-settings:'FILL' 1;">brush</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- ======= ABOUT SECTION ======= -->
+    <section style="padding:60px 0;" id="about">
+      <div class="bio-card reveal">
+        <div class="quote-icon">"</div>
+        <div class="bio-grid">
+          <div style="display:flex;flex-direction:column;gap:20px;">
+            <h2 class="section-title" style="display:flex;align-items:center;gap:12px;">
+              <span style="width:32px;height:4px;background:var(--tertiary-light);border-radius:2px;display:inline-block;"></span>
+              The Bio
+            </h2>
+            <p style="font-size:1.05rem;color:var(--text-secondary);line-height:1.9;">
+              Based in Karachi, Pakistan, my journey into marketing started with a passion for words and strategy. Today, I translate ideas into compelling digital content and copy. I believe every piece of content should not only capture attention but also drive meaningful business results. I am bilingual in English and Urdu, allowing me to connect with dynamic and diverse audiences.
+            </p>
+            <p style="font-size:1.05rem;color:var(--text-secondary);line-height:1.9;font-style:italic;opacity:0.75;">
+              "Marketing is no longer about the stuff that you make, but about the stories you tell."
+            </p>
+          </div>
+          <div class="reveal-scale" style="display:flex;flex-direction:column;gap:12px;transform:rotate(2deg);">
+            <div class="info-chip">
+              <span class="material-symbols-outlined" style="color:var(--primary);">location_on</span>
+              <span style="font-weight:600;font-size:0.9rem;">Karachi, Pakistan</span>
+            </div>
+            <div class="info-chip">
+              <span class="material-symbols-outlined" style="color:var(--tertiary);">work</span>
+              <span style="font-weight:600;font-size:0.9rem;">Ready for Opportunities</span>
+            </div>
+            <div class="info-chip">
+              <span class="material-symbols-outlined" style="color:var(--secondary);">bolt</span>
+              <span style="font-weight:600;font-size:0.9rem;">SEO &amp; Content Enthusiast</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= EXPERIENCE SECTION ======= -->
+    <section style="padding:60px 0;" id="experience">
+      <h2 class="section-title reveal" style="text-align:center;display:block;margin-bottom:48px;">
+        Work Experience
+      </h2>
+      <div class="section-title reveal" style="text-align:center;display:block;margin-bottom:0;"></div>
+      <div class="grid-3">
+        <!-- Card 1 -->
+        <div class="exp-card reveal" style="transform:rotate(-2deg);">
+          <span class="material-symbols-outlined pin">push_pin</span>
+          <p class="exp-date">2022 - Present</p>
+          <h3 style="font-family:'Epilogue';font-weight:800;font-size:1.15rem;margin:8px 0 12px;line-height:1.3;">Upwork &bull; Copywriter &amp; Strategist</h3>
+          <ul style="font-size:0.78rem;color:var(--text-secondary);line-height:1.7;padding-left:16px;list-style:disc;">
+            <li>Designed and developed pitch decks for US, APAC, and Middle East clients.</li>
+            <li>Edited and proofread content to ensure grammatical accuracy and tone consistency.</li>
+            <li>Crafted compelling web content, product descriptions, and marketing bulletins.</li>
+            <li>Analyzed advertising campaigns for target audience insights and creative strategies.</li>
+            <li>Created visually compelling and branded content using Canva.</li>
+            <li>Wrote captions, taglines, and CTAs driving website clicks.</li>
+          </ul>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;">
+            <span class="tag">Copywriting</span><span class="tag">Social Media</span>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="exp-card reveal" style="transform:rotate(1deg);transition-delay:150ms;">
+          <span class="material-symbols-outlined pin">push_pin</span>
+          <p class="exp-date">07/2025 - 09/2025</p>
+          <h3 style="font-family:'Epilogue';font-weight:800;font-size:1.15rem;margin:8px 0 12px;line-height:1.3;">Excelerate &bull; Digital Marketing Intern</h3>
+          <ul style="font-size:0.78rem;color:var(--text-secondary);line-height:1.7;padding-left:16px;list-style:disc;">
+            <li>Conducted comprehensive social media audits to assess platform performance and engagement.</li>
+            <li>Applied SEO and content optimization techniques to enhance organic reach and visibility.</li>
+            <li>Performed competitor analysis to identify market trends and benchmark performance.</li>
+          </ul>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;">
+            <span class="tag">SEO</span><span class="tag">Audience Insights</span>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="exp-card reveal" style="transform:rotate(-1deg);transition-delay:300ms;">
+          <span class="material-symbols-outlined pin">push_pin</span>
+          <p class="exp-date">07/2025 - 08/2025</p>
+          <h3 style="font-family:'Epilogue';font-weight:800;font-size:1.15rem;margin:8px 0 12px;line-height:1.3;">Meezan Bank &bull; Sales &amp; Marketing Intern</h3>
+          <ul style="font-size:0.78rem;color:var(--text-secondary);line-height:1.7;padding-left:16px;list-style:disc;">
+            <li>Assisted in daily branch operations, including account opening, deposits, and withdrawals.</li>
+            <li>Provided customer service by addressing client queries and guiding them about bank products.</li>
+            <li>Learned about Islamic banking procedures, financial instruments, and Shariah-compliant financing.</li>
+          </ul>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;">
+            <span class="tag">Customer Service</span><span class="tag">Sales</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= SKILLS SECTION ======= -->
+    <section style="padding:60px 0;" id="skills">
+      <div class="skills-flex">
+      <!-- Professional Skills -->
+      <div style="flex:1;min-width:280px;" class="reveal-left">
+        <h2 class="section-title" style="margin-bottom:28px;">Professional Skills</h2>
+        <div class="grid-2">
+          <div class="skill-card">
+            <div class="skill-icon" style="background:var(--primary-light);"><span class="material-symbols-outlined" style="color:white;font-variation-settings:'FILL' 1;">edit_document</span></div>
+            <div><p style="font-weight:700;">Copywriting</p><p style="font-size:0.75rem;opacity:0.5;">Content Creation</p></div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon" style="background:#31A8FF;"><span class="material-symbols-outlined" style="color:white;font-variation-settings:'FILL' 1;">search</span></div>
+            <div><p style="font-weight:700;">SEO Basics</p><p style="font-size:0.75rem;opacity:0.5;">Optimization</p></div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon" style="background:#00C4CC;"><span class="material-symbols-outlined" style="color:white;font-variation-settings:'FILL' 1;">dashboard</span></div>
+            <div><p style="font-weight:700;">Canva</p><p style="font-size:0.75rem;opacity:0.5;">Visual Content</p></div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon" style="background:var(--secondary);"><span class="material-symbols-outlined" style="color:white;font-variation-settings:'FILL' 1;">analytics</span></div>
+            <div><p style="font-weight:700;">MS Office</p><p style="font-size:0.75rem;opacity:0.5;">Suite &amp; Tools</p></div>
+          </div>
+        </div>
+      </div>
+      <!-- Soft Skills -->
+      <div style="flex:1;min-width:280px;background:rgba(234,242,245,0.6);padding:36px;border-radius:24px;box-shadow:inset 0 2px 12px rgba(0,0,0,0.03);border:1px solid rgba(167,174,177,0.05);" class="reveal-right">
+        <h2 class="section-title" style="color:var(--tertiary);margin-bottom:28px;">Soft Skills</h2>
+        <div style="display:flex;flex-direction:column;gap:24px;" id="skillBars">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+              <span style="font-weight:700;font-size:0.9rem;">Analytical Thinking</span>
+              <span style="font-size:0.75rem;font-weight:700;color:var(--tertiary);">90%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="background:linear-gradient(90deg,var(--tertiary),var(--tertiary-light));--target-width:90%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+              <span style="font-weight:700;font-size:0.9rem;">Communication</span>
+              <span style="font-size:0.75rem;font-weight:700;color:var(--secondary);">95%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="background:linear-gradient(90deg,var(--secondary),var(--secondary-light));--target-width:95%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+              <span style="font-weight:700;font-size:0.9rem;">Creativity</span>
+              <span style="font-size:0.75rem;font-weight:700;color:var(--primary);">85%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="background:linear-gradient(90deg,var(--primary),var(--primary-light));--target-width:85%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+              <span style="font-weight:700;font-size:0.9rem;">Leadership</span>
+              <span style="font-size:0.75rem;font-weight:700;color:var(--primary-dark);">80%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="background:linear-gradient(90deg,var(--primary-dark),var(--primary));--target-width:80%;"></div></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- ======= EDUCATION SECTION ======= -->
+    <section style="padding:60px 0;" id="education">
+      <div class="grid-bento">
+        <div class="bento-card reveal-left" style="grid-column:span 2;background:rgba(63,87,164,0.04);border:2px solid rgba(63,87,164,0.08);">
+          <span class="material-symbols-outlined" style="font-size:3rem;color:var(--primary);margin-bottom:12px;display:block;transition:all 0.5s;">school</span>
+          <span class="material-symbols-outlined bg-icon">school</span>
+          <h3 style="font-family:'Epilogue';font-weight:900;font-size:2rem;color:var(--primary);margin-bottom:8px;">Academic Journey</h3>
+          <p style="color:var(--text-secondary);font-style:italic;">Consistency and leadership drive meaningful progress.</p>
+        </div>
+        <div class="bento-card reveal-right" style="grid-column:span 2;">
+          <p class="exp-date" style="color:var(--tertiary);margin-bottom:8px;">2022 - 2025</p>
+          <h4 style="font-family:'Epilogue';font-weight:800;font-size:1.15rem;line-height:1.3;">Bachelor of Business Administration</h4>
+          <p style="font-weight:700;font-size:0.9rem;margin-top:6px;">Jinnah University for Women</p>
+          <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">CGPA: 3.6</p>
+        </div>
+        <div class="bento-card reveal" style="grid-column:span 4;">
+          <span class="material-symbols-outlined bg-icon">group</span>
+          <p class="exp-date" style="color:var(--tertiary);margin-bottom:8px;">Extracurriculars</p>
+          <h4 style="font-family:'Epilogue';font-weight:800;font-size:1.15rem;">Volunteer &amp; Research Leader</h4>
+          <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;max-width:600px;line-height:1.7;">Volunteered in the 5th International Research Conference on Sustainable Business-Driven Strategy. Worked as a project team leader to conduct extensive surveys.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= CONTACT SECTION ======= -->
+    <section style="padding:60px 0;display:flex;justify-content:center;" id="contact">
+      <div style="position:relative;width:100%;max-width:600px;">
+        <div class="contact-glow"></div>
+        <div class="contact-card reveal-scale" style="position:relative;z-index:1;">
+          <div class="contact-inner">
+          <div style="width:120px;height:120px;border-radius:50%;overflow:hidden;border:4px solid white;box-shadow:0 8px 24px rgba(0,0,0,0.1);flex-shrink:0;transition:transform 0.5s;" class="magnetic">
+            <img src="areeba-3.jpg" alt="Areeba Siraj" style="width:100%;height:100%;object-fit:cover;"/>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <h2 style="font-family:'Epilogue';font-weight:900;font-size:2rem;color:var(--primary);margin-bottom:4px;">Areeba Siraj</h2>
+            <p style="font-size:0.8rem;color:var(--text-secondary);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;">Let's grow your business together</p>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <a href="mailto:areebasiraj15@gmail.com" class="contact-link">
+                <span class="material-symbols-outlined icon" style="color:var(--tertiary);">mail</span>areebasiraj15@gmail.com
+              </a>
+              <div class="contact-link">
+                <span class="material-symbols-outlined icon" style="color:var(--secondary);">phone_iphone</span>0315-0385389
+              </div>
+              <div class="contact-link">
+                <span class="material-symbols-outlined icon" style="color:var(--primary);">location_on</span>Karachi, Pakistan
+              </div>
+              <a href="https://www.linkedin.com/in/areeba-siraj-715488370" class="contact-link" target="_blank">
+                <span class="material-symbols-outlined icon">language</span>LinkedIn Profile
+              </a>
+            </div>
+          </div>
+          </div>
+        </div>
+        <!-- Paper clip decoration -->
+        <div class="float" style="position:absolute;top:-24px;right:48px;width:28px;height:44px;background:var(--outline);opacity:0.15;border-radius:99px;border:2px solid rgba(0,0,0,0.1);--rot:0deg;"></div>
+      </div>
+    </section>
+
+    <!-- ======= FOOTER ======= -->
+    <footer style="text-align:center;padding:60px 0 0;">
+      <div style="display:flex;gap:24px;justify-content:center;margin-bottom:16px;">
+        <a href="#">Instagram</a><a href="#">LinkedIn</a><a href="#">Behance</a><a href="#">Dribbble</a>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);">© 2026 Areeba Siraj • Hand-assembled with love</p>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:16px;opacity:0.25;">
+        <span class="material-symbols-outlined" style="font-size:0.9rem;">eco</span>
+        <span class="material-symbols-outlined" style="font-size:0.9rem;">palette</span>
+        <span class="material-symbols-outlined" style="font-size:0.9rem;">auto_awesome</span>
+      </div>
+    </footer>
+
+  </div>
+</main>
+
+
+<!-- MOBILE TOP HEADER -->
+<header class="mobile-header" id="mobileHeader">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <img src="areeba-1.jpg" alt="Areeba" style="width:100%;height:100%;object-fit:cover;"/>
+    </div>
+    <span style="font-family:'Epilogue';font-weight:800;font-size:1rem;color:var(--primary);">Areeba Siraj</span>
+  </div>
+  <a href="#contact" class="btn-primary" style="padding:8px 20px;font-size:0.8rem;box-shadow:0 4px 12px var(--glow-primary);">
+    Hire Me <span class="material-symbols-outlined" style="font-size:1rem;">arrow_forward</span>
+  </a>
+</header>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-nav" id="mobileNav">
+  <div style="display:flex;justify-content:space-around;align-items:center;max-width:400px;margin:0 auto;padding:0 8px;">
+    <a href="#hero" class="mobile-nav-item active" data-section="hero">
+      <span class="material-symbols-outlined" style="font-size:1.4rem;">home</span>
+      <span>Home</span>
+    </a>
+    <a href="#about" class="mobile-nav-item" data-section="about">
+      <span class="material-symbols-outlined" style="font-size:1.4rem;">person</span>
+      <span>About</span>
+    </a>
+    <a href="#experience" class="mobile-nav-item" data-section="experience">
+      <span class="material-symbols-outlined" style="font-size:1.4rem;">work</span>
+      <span>Work</span>
+    </a>
+    <a href="#skills" class="mobile-nav-item" data-section="skills">
+      <span class="material-symbols-outlined" style="font-size:1.4rem;">psychology</span>
+      <span>Skills</span>
+    </a>
+    <a href="#contact" class="mobile-nav-item" data-section="contact">
+      <span class="material-symbols-outlined" style="font-size:1.4rem;">mail</span>
+      <span>Contact</span>
+    </a>
+  </div>
+</nav>
+
+<!-- FAB -->
+<button class="fab magnetic" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+  <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">edit_square</span>
+</button>
+
+<!-- ======= JAVASCRIPT ======= -->
+<script>
+// === FORCE TOP SCROLL ON REFRESH ===
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
+// === LOADER ===
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2200);
+});
+
+// === CUSTOM CURSOR ===
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  dot.style.left = mouseX - 4 + 'px';
+  dot.style.top = mouseY - 4 + 'px';
+});
+
+function animateRing() {
+  ringX += (mouseX - ringX) * 0.15;
+  ringY += (mouseY - ringY) * 0.15;
+  ring.style.left = ringX + 'px';
+  ring.style.top = ringY + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.querySelectorAll('a, button, .skill-card, .exp-card, .bento-card, .info-chip, .magnetic').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+});
+
+// === SCROLL PROGRESS ===
+window.addEventListener('scroll', () => {
+  const scrollTop = document.documentElement.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / scrollHeight) * 100;
+  document.getElementById('scrollIndicator').style.width = progress + '%';
+});
+
+// === SCROLL REVEAL ===
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('active');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => revealObserver.observe(el));
+
+// === SKILL BAR ANIMATION ===
+const skillSection = document.getElementById('skillBars');
+const skillObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.progress-fill').forEach((bar, i) => {
+        setTimeout(() => bar.classList.add('animated'), i * 200);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+if (skillSection) skillObserver.observe(skillSection);
+
+// === ACTIVE NAV LINK ===
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+const mobileNavLinks = document.querySelectorAll('.mobile-nav-item');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(sec => {
+    const top = sec.offsetTop - 120;
+    if (scrollY >= top) current = sec.getAttribute('id');
+  });
+  if (!current) current = 'hero'; // Default to hero at the top
+
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current || (!current && link.getAttribute('href') === '#')) {
+      link.classList.add('active');
+    }
+  });
+
+  mobileNavLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) {
+      link.classList.add('active');
+    }
+  });
+});
+
+// === PARTICLES ===
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.3;
+    this.speedY = (Math.random() - 0.5) * 0.3;
+    this.opacity = Math.random() * 0.3 + 0.1;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(63, 87, 164, ${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  // Draw connections
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(63, 87, 164, ${0.05 * (1 - dist / 120)})`;
+        ctx.lineWidth = 0.5;
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// === MAGNETIC EFFECT ===
+document.querySelectorAll('.magnetic').forEach(el => {
+  el.addEventListener('mousemove', e => {
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    el.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+  });
+  el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+});
+
+// === SMOOTH SCROLL FOR NAV LINKS ===
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// Hide cursor on mobile
+if ('ontouchstart' in window) {
+  dot.style.display = 'none';
+  ring.style.display = 'none';
+}
+</script>
+
+</body>
+</html>
