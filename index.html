@@ -27,6 +27,9 @@
 <!-- PARTICLES -->
 <canvas id="particles-canvas"></canvas>
 
+<!-- CURSOR GLOW (desktop only) -->
+<div id="cursorGlow" style="position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(138,43,226,0.06) 0%,transparent 70%);pointer-events:none;z-index:1;transform:translate(-50%,-50%);transition:opacity 0.3s;opacity:0;"></div>
+
 <!-- SIDEBAR (Desktop) -->
 <aside class="sidebar" style="position:fixed;left:0;top:0;bottom:0;width:260px;z-index:40;padding-top:72px;">
   <div style="display:flex;flex-direction:column;align-items:center;padding:0 24px 20px;">
@@ -78,14 +81,15 @@
 
       <!-- Hero Text -->
       <div class="reveal-right" style="flex:1.2;">
-        <div style="display:inline-block;background:var(--secondary);padding:6px 20px;border-radius:99px;transform:rotate(-1deg);box-shadow:0 0 15px var(--glow-sec);margin-bottom:20px;border:1px solid rgba(255,255,255,0.2);">
+        <div class="hero-badge" style="display:inline-block;background:var(--secondary);padding:6px 20px;border-radius:99px;transform:rotate(-1deg);box-shadow:0 0 15px var(--glow-sec);margin-bottom:20px;border:1px solid rgba(255,255,255,0.2);">
           <span style="font-family:'Epilogue';font-weight:800;color:var(--surface);font-size:1rem;letter-spacing:0.02em;">Hello there! 👋</span>
         </div>
+        <div class="hero-stagger">
         <h1 class="hero-title" style="margin-top:16px;">
           Social Media<br/><span class="accent highlight">Executive</span><span class="typing-cursor" id="typingCursor"></span>
         </h1>
         <p style="font-size:1.15rem;color:var(--text-secondary);line-height:1.8;max-width:480px;margin-top:20px;word-wrap:break-word;">
-          Results-driven marketing professional with hands-on experience in social media management and content creation, seeking to contribute creative and data-driven strategies to enhance a brand’s online presence and drive engagement.
+          Results-driven marketing professional with hands-on experience in social media management and content creation, seeking to contribute creative and data-driven strategies to enhance a brand's online presence and drive engagement.
         </p>
         <div style="display:flex;gap:16px;align-items:center;margin-top:28px;flex-wrap:wrap;">
           <a href="#contact" class="btn-primary magnetic">
@@ -99,6 +103,7 @@
               <span class="material-symbols-outlined" style="font-size:1rem;color:var(--secondary);font-variation-settings:'FILL' 1;">brush</span>
             </div>
           </div>
+        </div>
         </div>
       </div>
       </div>
@@ -419,7 +424,24 @@ window.addEventListener('load', () => {
   setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2200);
 });
 
-
+// === CURSOR GLOW (desktop only) ===
+const cursorGlow = document.getElementById('cursorGlow');
+if (window.matchMedia('(hover: hover)').matches && window.innerWidth > 768) {
+  let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursorGlow.style.opacity = '1';
+  }, { passive: true });
+  document.addEventListener('mouseleave', () => { cursorGlow.style.opacity = '0'; });
+  function animateGlow() {
+    glowX += (mouseX - glowX) * 0.08;
+    glowY += (mouseY - glowY) * 0.08;
+    cursorGlow.style.left = glowX + 'px';
+    cursorGlow.style.top = glowY + 'px';
+    requestAnimationFrame(animateGlow);
+  }
+  animateGlow();
+}
 
 // === SCROLL PROGRESS ===
 let isScrolling = false;
@@ -436,15 +458,20 @@ window.addEventListener('scroll', () => {
   }
 }, { passive: true });
 
-// === SCROLL REVEAL ===
+// === SCROLL REVEAL (enhanced with stagger) ===
 const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('active');
+      // Stagger children if they have .reveal inside
+      const children = entry.target.querySelectorAll('.reveal');
+      children.forEach((child, i) => {
+        setTimeout(() => child.classList.add('active'), i * 120);
+      });
     }
   });
-}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
 revealEls.forEach(el => revealObserver.observe(el));
 
 // === SKILL BAR ANIMATION ===
@@ -459,6 +486,30 @@ const skillObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.3 });
 if (skillSection) skillObserver.observe(skillSection);
+
+// === COUNTER ANIMATION (skill %) ===
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !entry.target.dataset.counted) {
+      entry.target.dataset.counted = 'true';
+      const target = parseInt(entry.target.textContent);
+      let current = 0;
+      const step = Math.ceil(target / 40);
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) { current = target; clearInterval(timer); }
+        entry.target.textContent = current + '%';
+      }, 30);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.progress-fill').forEach(bar => {
+  const parent = bar.closest('div').previousElementSibling;
+  if (parent) {
+    const pctEl = parent.querySelector('span:last-child');
+    if (pctEl && pctEl.textContent.includes('%')) counterObserver.observe(pctEl);
+  }
+});
 
 // === ACTIVE NAV LINK ===
 const sections = document.querySelectorAll('section[id]');
@@ -489,10 +540,16 @@ window.addEventListener('scroll', () => {
   }
 }, { passive: true });
 
-// === PARTICLES ===
+// === PARTICLES (optimized - pause when tab hidden) ===
 const canvas = document.getElementById('particles-canvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
+let isTabVisible = true;
+
+document.addEventListener('visibilitychange', () => {
+  isTabVisible = !document.hidden;
+  if (isTabVisible) animateParticles();
+});
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
@@ -502,9 +559,7 @@ resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
 class Particle {
-  constructor() {
-    this.reset();
-  }
+  constructor() { this.reset(); }
   reset() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
@@ -512,6 +567,7 @@ class Particle {
     this.speedX = (Math.random() - 0.5) * 0.3;
     this.speedY = (Math.random() - 0.5) * 0.3;
     this.opacity = Math.random() * 0.3 + 0.1;
+    this.hue = Math.random() > 0.5 ? '138, 43, 226' : '0, 210, 255';
   }
   update() {
     this.x += this.speedX;
@@ -521,15 +577,16 @@ class Particle {
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(138, 43, 226, ${this.opacity})`;
+    ctx.fillStyle = `rgba(${this.hue}, ${this.opacity})`;
     ctx.fill();
   }
 }
 
-const particleCount = window.innerWidth < 768 ? 25 : 50;
+const particleCount = window.innerWidth < 768 ? 20 : 45;
 for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 
 function animateParticles() {
+  if (!isTabVisible) return;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   particles.forEach(p => { p.update(); p.draw(); });
   
@@ -537,11 +594,11 @@ function animateParticles() {
     for (let j = i + 1; j < particles.length; j++) {
       const dx = particles[i].x - particles[j].x;
       const dy = particles[i].y - particles[j].y;
-      const dist = dx * dx + dy * dy; // Avoid Math.sqrt for performance
+      const dist = dx * dx + dy * dy;
 
-      if (dist < 10000) { // 100 squared
+      if (dist < 12000) {
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(0, 210, 255, ${0.1 * (1 - Math.sqrt(dist) / 100)})`;
+        ctx.strokeStyle = `rgba(0, 210, 255, ${0.08 * (1 - Math.sqrt(dist) / 110)})`;
         ctx.lineWidth = 0.5;
         ctx.moveTo(particles[i].x, particles[i].y);
         ctx.lineTo(particles[j].x, particles[j].y);
@@ -552,6 +609,23 @@ function animateParticles() {
   requestAnimationFrame(animateParticles);
 }
 animateParticles();
+
+// === TILT EFFECT ON CARDS (desktop only) ===
+if (window.matchMedia('(hover: hover)').matches) {
+  document.querySelectorAll('.exp-card, .skill-card, .bento-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `perspective(600px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      setTimeout(() => { card.style.transition = ''; }, 500);
+    });
+  });
+}
 
 // === MAGNETIC EFFECT ===
 document.querySelectorAll('.magnetic').forEach(el => {
@@ -574,6 +648,22 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
+// === PARALLAX BLOBS ON SCROLL ===
+let parallaxTicking = false;
+const blobs = document.querySelectorAll('.blob');
+window.addEventListener('scroll', () => {
+  if (!parallaxTicking) {
+    requestAnimationFrame(() => {
+      const scrollY = window.scrollY;
+      blobs.forEach((blob, i) => {
+        const speed = 0.03 + (i * 0.015);
+        blob.style.transform = `translateY(${scrollY * speed}px)`;
+      });
+      parallaxTicking = false;
+    });
+    parallaxTicking = true;
+  }
+}, { passive: true });
 
 </script>
 
