@@ -38,31 +38,7 @@ body {
   cursor: default;
 }
 
-/* ===== CUSTOM CURSOR ===== */
-.cursor-dot {
-  width: 8px; height: 8px;
-  background: var(--primary);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 99999;
-  transition: transform 0.1s;
-  mix-blend-mode: difference;
-}
-.cursor-ring {
-  width: 40px; height: 40px;
-  border: 2px solid var(--primary-light);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 99998;
-  transition: width 0.3s, height 0.3s, border-color 0.3s;
-  transform: translate(-50%, -50%);
-}
-.cursor-ring.hover {
-  width: 60px; height: 60px;
-  border-color: var(--tertiary-light);
-}
+
 
 /* ===== LOADING SCREEN ===== */
 .loader {

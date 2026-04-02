@@ -22,9 +22,7 @@
 <!-- SCROLL PROGRESS -->
 <div class="scroll-indicator" id="scrollIndicator"></div>
 
-<!-- CUSTOM CURSOR -->
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+
 
 <!-- PARTICLES -->
 <canvas id="particles-canvas"></canvas>
@@ -389,36 +387,7 @@ window.addEventListener('load', () => {
   setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2200);
 });
 
-// === CUSTOM CURSOR ===
-const dot = document.getElementById('cursorDot');
-const ring = document.getElementById('cursorRing');
-let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-let cursorActive = true;
 
-if (!('ontouchstart' in window)) {
-  document.addEventListener('mousemove', e => {
-    mouseX = e.clientX; mouseY = e.clientY;
-    dot.style.transform = `translate3d(${mouseX - 4}px, ${mouseY - 4}px, 0)`;
-  }, { passive: true });
-
-  function animateRing() {
-    if(!cursorActive) return;
-    ringX += (mouseX - ringX) * 0.15;
-    ringY += (mouseY - ringY) * 0.15;
-    ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
-
-  document.querySelectorAll('a, button, .skill-card, .exp-card, .bento-card, .info-chip, .magnetic').forEach(el => {
-    el.addEventListener('mouseenter', () => ring.classList.add('hover'), { passive: true });
-    el.addEventListener('mouseleave', () => ring.classList.remove('hover'), { passive: true });
-  });
-} else {
-  dot.style.display = 'none';
-  ring.style.display = 'none';
-  cursorActive = false;
-}
 
 // === SCROLL PROGRESS ===
 let isScrolling = false;
