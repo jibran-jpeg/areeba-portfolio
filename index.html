@@ -540,75 +540,159 @@ window.addEventListener('scroll', () => {
   }
 }, { passive: true });
 
-// === PARTICLES (optimized - pause when tab hidden) ===
+// === STARFIELD + FLOATING ORBS (optimized - pause when tab hidden) ===
 const canvas = document.getElementById('particles-canvas');
 const ctx = canvas.getContext('2d');
-let particles = [];
+let stars = [];
+let orbs = [];
 let isTabVisible = true;
+let time = 0;
 
 document.addEventListener('visibilitychange', () => {
   isTabVisible = !document.hidden;
-  if (isTabVisible) animateParticles();
+  if (isTabVisible) animateBackground();
 });
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.height = document.documentElement.scrollHeight;
 }
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-class Particle {
+// === STAR CLASS ===
+class Star {
   constructor() { this.reset(); }
   reset() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 2 + 0.5;
-    this.speedX = (Math.random() - 0.5) * 0.3;
-    this.speedY = (Math.random() - 0.5) * 0.3;
-    this.opacity = Math.random() * 0.3 + 0.1;
-    this.hue = Math.random() > 0.5 ? '138, 43, 226' : '0, 210, 255';
+    this.baseSize = Math.random() * 1.8 + 0.3;
+    this.size = this.baseSize;
+    this.twinkleSpeed = Math.random() * 0.02 + 0.008;
+    this.twinkleOffset = Math.random() * Math.PI * 2;
+    this.driftX = (Math.random() - 0.5) * 0.08;
+    this.driftY = (Math.random() - 0.5) * 0.06;
+    this.maxOpacity = Math.random() * 0.5 + 0.2;
+    this.opacity = this.maxOpacity;
+    // Color: mix of purple, cyan, white, rose
+    const colors = [
+      '168, 85, 247',  // purple
+      '0, 210, 255',   // cyan 
+      '251, 113, 133', // rose
+      '200, 200, 255', // soft white-blue
+    ];
+    this.color = colors[Math.floor(Math.random() * colors.length)];
+    this.isStar = Math.random() > 0.6; // 40% are sparkle stars, rest are dots
   }
-  update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
-    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+  update(t) {
+    // Gentle drift
+    this.x += this.driftX;
+    this.y += this.driftY;
+    // Twinkle
+    this.opacity = this.maxOpacity * (0.5 + 0.5 * Math.sin(t * this.twinkleSpeed + this.twinkleOffset));
+    this.size = this.baseSize * (0.85 + 0.15 * Math.sin(t * this.twinkleSpeed * 1.5 + this.twinkleOffset));
+    // Wrap around
+    if (this.x < -10) this.x = canvas.width + 10;
+    if (this.x > canvas.width + 10) this.x = -10;
+    if (this.y < -10) this.y = canvas.height + 10;
+    if (this.y > canvas.height + 10) this.y = -10;
   }
   draw() {
+    ctx.save();
+    ctx.globalAlpha = this.opacity;
+    if (this.isStar && this.baseSize > 1) {
+      // Draw 4-point sparkle
+      this.drawSparkle();
+    } else {
+      // Draw soft glowing dot
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgb(${this.color})`;
+      ctx.shadowBlur = this.size * 4;
+      ctx.shadowColor = `rgba(${this.color}, 0.6)`;
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+  drawSparkle() {
+    const s = this.size;
+    ctx.fillStyle = `rgb(${this.color})`;
+    ctx.shadowBlur = s * 6;
+    ctx.shadowColor = `rgba(${this.color}, 0.8)`;
+    ctx.translate(this.x, this.y);
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(${this.hue}, ${this.opacity})`;
+    // Vertical spike
+    ctx.moveTo(0, -s * 2.5);
+    ctx.quadraticCurveTo(s * 0.3, -s * 0.3, s * 0.8, 0);
+    ctx.quadraticCurveTo(s * 0.3, s * 0.3, 0, s * 2.5);
+    ctx.quadraticCurveTo(-s * 0.3, s * 0.3, -s * 0.8, 0);
+    ctx.quadraticCurveTo(-s * 0.3, -s * 0.3, 0, -s * 2.5);
     ctx.fill();
   }
 }
 
-const particleCount = window.innerWidth < 768 ? 20 : 45;
-for (let i = 0; i < particleCount; i++) particles.push(new Particle());
-
-function animateParticles() {
-  if (!isTabVisible) return;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p => { p.update(); p.draw(); });
-  
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const dist = dx * dx + dy * dy;
-
-      if (dist < 12000) {
-        ctx.beginPath();
-        ctx.strokeStyle = `rgba(0, 210, 255, ${0.08 * (1 - Math.sqrt(dist) / 110)})`;
-        ctx.lineWidth = 0.5;
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.stroke();
-      }
-    }
+// === FLOATING ORB CLASS ===
+class FloatingOrb {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.radius = Math.random() * 30 + 15;
+    this.speedX = (Math.random() - 0.5) * 0.15;
+    this.speedY = (Math.random() - 0.5) * 0.12;
+    this.pulseSpeed = Math.random() * 0.005 + 0.003;
+    this.pulseOffset = Math.random() * Math.PI * 2;
+    const orbColors = [
+      { r: 138, g: 43, b: 226 },  // purple
+      { r: 0, g: 210, b: 255 },   // cyan
+      { r: 244, g: 63, b: 94 },   // rose
+    ];
+    this.color = orbColors[Math.floor(Math.random() * orbColors.length)];
   }
-  requestAnimationFrame(animateParticles);
+  update(t) {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.currentRadius = this.radius * (0.9 + 0.1 * Math.sin(t * this.pulseSpeed + this.pulseOffset));
+    // Wrap
+    if (this.x < -this.radius * 2) this.x = canvas.width + this.radius;
+    if (this.x > canvas.width + this.radius * 2) this.x = -this.radius;
+    if (this.y < -this.radius * 2) this.y = canvas.height + this.radius;
+    if (this.y > canvas.height + this.radius * 2) this.y = -this.radius;
+  }
+  draw() {
+    const c = this.color;
+    const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.currentRadius);
+    gradient.addColorStop(0, `rgba(${c.r}, ${c.g}, ${c.b}, 0.06)`);
+    gradient.addColorStop(0.5, `rgba(${c.r}, ${c.g}, ${c.b}, 0.02)`);
+    gradient.addColorStop(1, `rgba(${c.r}, ${c.g}, ${c.b}, 0)`);
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.currentRadius, 0, Math.PI * 2);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+  }
 }
-animateParticles();
+
+// Create stars & orbs — less on mobile for performance
+const isMobile = window.innerWidth < 768;
+const starCount = isMobile ? 40 : 90;
+const orbCount = isMobile ? 4 : 8;
+
+for (let i = 0; i < starCount; i++) stars.push(new Star());
+for (let i = 0; i < orbCount; i++) orbs.push(new FloatingOrb());
+
+function animateBackground() {
+  if (!isTabVisible) return;
+  time++;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Draw orbs first (behind stars)
+  orbs.forEach(o => { o.update(time); o.draw(); });
+  // Draw stars on top
+  stars.forEach(s => { s.update(time); s.draw(); });
+  
+  requestAnimationFrame(animateBackground);
+}
+animateBackground();
 
 // === TILT EFFECT ON CARDS (desktop only) ===
 if (window.matchMedia('(hover: hover)').matches) {
