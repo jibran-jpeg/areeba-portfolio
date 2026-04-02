@@ -680,15 +680,126 @@ const orbCount = isMobile ? 5 : 10;
 for (let i = 0; i < starCount; i++) stars.push(new Star());
 for (let i = 0; i < orbCount; i++) orbs.push(new FloatingOrb());
 
+// === SHOOTING STARS ===
+let shootingStars = [];
+class ShootingStar {
+  constructor() {
+    this.x = Math.random() * canvas.width * 0.8;
+    this.y = Math.random() * canvas.height * 0.4;
+    this.len = Math.random() * 60 + 40;
+    this.speed = Math.random() * 8 + 6;
+    this.angle = (Math.PI / 6) + Math.random() * 0.3;
+    this.opacity = 1;
+    this.trail = [];
+    const colors = ['168,85,247', '0,210,255', '251,113,133', '255,255,255'];
+    this.color = colors[Math.floor(Math.random() * colors.length)];
+  }
+  update() {
+    this.x += Math.cos(this.angle) * this.speed;
+    this.y += Math.sin(this.angle) * this.speed;
+    this.trail.push({ x: this.x, y: this.y });
+    if (this.trail.length > 12) this.trail.shift();
+    this.opacity -= 0.012;
+  }
+  draw() {
+    if (this.trail.length < 2) return;
+    ctx.save();
+    for (let i = 1; i < this.trail.length; i++) {
+      const t = i / this.trail.length;
+      ctx.beginPath();
+      ctx.moveTo(this.trail[i - 1].x, this.trail[i - 1].y);
+      ctx.lineTo(this.trail[i].x, this.trail[i].y);
+      ctx.strokeStyle = `rgba(${this.color}, ${t * this.opacity})`;
+      ctx.lineWidth = t * 2.5;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = `rgba(${this.color}, ${t * this.opacity * 0.8})`;
+      ctx.stroke();
+    }
+    // Head glow
+    const head = this.trail[this.trail.length - 1];
+    ctx.beginPath();
+    ctx.arc(head.x, head.y, 2, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255, ${this.opacity})`;
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = `rgba(${this.color}, ${this.opacity})`;
+    ctx.fill();
+    ctx.restore();
+  }
+  isDead() { return this.opacity <= 0; }
+}
+
+// === SCROLL STATE ===
+let scrollY = 0;
+let lastScrollY = 0;
+let scrollSpeed = 0;
+let scrollDir = 1;
+
+window.addEventListener('scroll', () => {
+  scrollY = window.scrollY;
+  scrollSpeed = Math.abs(scrollY - lastScrollY);
+  scrollDir = scrollY > lastScrollY ? 1 : -1;
+  lastScrollY = scrollY;
+  
+  // Spawn shooting star on fast scroll (throttled)
+  if (scrollSpeed > 15 && shootingStars.length < 3 && Math.random() > 0.6) {
+    shootingStars.push(new ShootingStar());
+  }
+}, { passive: true });
+
+// Assign each star a depth layer for parallax
+stars.forEach(s => {
+  s.depth = Math.random() * 0.5 + 0.1; // 0.1 to 0.6 parallax factor
+  s.baseY = s.y;
+});
+
+// Assign orbs a deeper parallax
+orbs.forEach(o => {
+  o.depth = Math.random() * 0.3 + 0.05;
+  o.baseY = o.y;
+});
+
 function animateBackground() {
   if (!isTabVisible) return;
   time++;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   
-  // Draw orbs first (behind stars)
-  orbs.forEach(o => { o.update(time); o.draw(); });
-  // Draw stars on top
-  stars.forEach(s => { s.update(time); s.draw(); });
+  // Smooth scroll speed decay
+  const smoothSpeed = Math.min(scrollSpeed, 40);
+  
+  // Draw orbs with parallax
+  orbs.forEach(o => {
+    o.update(time);
+    // Parallax: shift Y based on scroll
+    const parallaxY = scrollY * o.depth * 0.15;
+    const origY = o.y;
+    o.y = o.y - parallaxY % canvas.height;
+    // Boost radius slightly when scrolling fast
+    o.currentRadius *= (1 + smoothSpeed * 0.002);
+    o.draw();
+    o.y = origY;
+  });
+  
+  // Draw stars with layered parallax
+  stars.forEach(s => {
+    s.update(time);
+    const origY = s.y;
+    const origX = s.x;
+    // Vertical parallax based on depth
+    s.y = s.y - (scrollY * s.depth * 0.12) % canvas.height;
+    // Slight horizontal shift on scroll for depth feel
+    s.x = s.x + (scrollY * s.depth * 0.02 * scrollDir) % 20;
+    // Brighten stars slightly on fast scroll
+    const origOpacity = s.opacity;
+    s.opacity = Math.min(s.opacity * (1 + smoothSpeed * 0.01), 1);
+    s.draw();
+    s.y = origY;
+    s.x = origX;
+    s.opacity = origOpacity;
+  });
+  
+  // Draw and update shooting stars
+  shootingStars.forEach(ss => { ss.update(); ss.draw(); });
+  shootingStars = shootingStars.filter(ss => !ss.isDead());
   
   requestAnimationFrame(animateBackground);
 }
@@ -733,15 +844,14 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 
 // === PARALLAX BLOBS ON SCROLL ===
-let parallaxTicking = false;
 const blobs = document.querySelectorAll('.blob');
+let parallaxTicking = false;
 window.addEventListener('scroll', () => {
   if (!parallaxTicking) {
     requestAnimationFrame(() => {
-      const scrollY = window.scrollY;
       blobs.forEach((blob, i) => {
         const speed = 0.03 + (i * 0.015);
-        blob.style.transform = `translateY(${scrollY * speed}px)`;
+        blob.style.transform = `translateY(${window.scrollY * speed}px)`;
       });
       parallaxTicking = false;
     });
