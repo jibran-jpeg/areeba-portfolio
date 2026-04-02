@@ -393,34 +393,47 @@ window.addEventListener('load', () => {
 const dot = document.getElementById('cursorDot');
 const ring = document.getElementById('cursorRing');
 let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+let cursorActive = true;
 
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX; mouseY = e.clientY;
-  dot.style.left = mouseX - 4 + 'px';
-  dot.style.top = mouseY - 4 + 'px';
-});
+if (!('ontouchstart' in window)) {
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    dot.style.transform = `translate3d(${mouseX - 4}px, ${mouseY - 4}px, 0)`;
+  }, { passive: true });
 
-function animateRing() {
-  ringX += (mouseX - ringX) * 0.15;
-  ringY += (mouseY - ringY) * 0.15;
-  ring.style.left = ringX + 'px';
-  ring.style.top = ringY + 'px';
-  requestAnimationFrame(animateRing);
+  function animateRing() {
+    if(!cursorActive) return;
+    ringX += (mouseX - ringX) * 0.15;
+    ringY += (mouseY - ringY) * 0.15;
+    ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .skill-card, .exp-card, .bento-card, .info-chip, .magnetic').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'), { passive: true });
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'), { passive: true });
+  });
+} else {
+  dot.style.display = 'none';
+  ring.style.display = 'none';
+  cursorActive = false;
 }
-animateRing();
-
-document.querySelectorAll('a, button, .skill-card, .exp-card, .bento-card, .info-chip, .magnetic').forEach(el => {
-  el.addEventListener('mouseenter', () => ring.classList.add('hover'));
-  el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
-});
 
 // === SCROLL PROGRESS ===
+let isScrolling = false;
 window.addEventListener('scroll', () => {
-  const scrollTop = document.documentElement.scrollTop;
-  const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-  const progress = (scrollTop / scrollHeight) * 100;
-  document.getElementById('scrollIndicator').style.width = progress + '%';
-});
+  if (!isScrolling) {
+    window.requestAnimationFrame(() => {
+      const scrollTop = document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      document.getElementById('scrollIndicator').style.transform = `scaleX(${progress / 100})`;
+      isScrolling = false;
+    });
+    isScrolling = true;
+  }
+}, { passive: true });
 
 // === SCROLL REVEAL ===
 const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
@@ -450,28 +463,30 @@ if (skillSection) skillObserver.observe(skillSection);
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-link');
 const mobileNavLinks = document.querySelectorAll('.mobile-nav-item');
+let navScrollTicking = false;
+
 window.addEventListener('scroll', () => {
-  let current = '';
-  sections.forEach(sec => {
-    const top = sec.offsetTop - 120;
-    if (scrollY >= top) current = sec.getAttribute('id');
-  });
-  if (!current) current = 'hero'; // Default to hero at the top
+  if (!navScrollTicking) {
+    window.requestAnimationFrame(() => {
+      let current = '';
+      sections.forEach(sec => {
+        const top = sec.offsetTop - 120;
+        if (scrollY >= top) current = sec.getAttribute('id');
+      });
+      if (!current) current = 'hero'; 
 
-  navLinks.forEach(link => {
-    link.classList.remove('active');
-    if (link.getAttribute('href') === '#' + current || (!current && link.getAttribute('href') === '#')) {
-      link.classList.add('active');
-    }
-  });
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current || (!current && link.getAttribute('href') === '#'));
+      });
 
-  mobileNavLinks.forEach(link => {
-    link.classList.remove('active');
-    if (link.getAttribute('href') === '#' + current) {
-      link.classList.add('active');
-    }
-  });
-});
+      mobileNavLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+      navScrollTicking = false;
+    });
+    navScrollTicking = true;
+  }
+}, { passive: true });
 
 // === PARTICLES ===
 const canvas = document.getElementById('particles-canvas');
@@ -510,20 +525,22 @@ class Particle {
   }
 }
 
-for (let i = 0; i < 60; i++) particles.push(new Particle());
+const particleCount = window.innerWidth < 768 ? 25 : 50;
+for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 
 function animateParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   particles.forEach(p => { p.update(); p.draw(); });
-  // Draw connections
+  
   for (let i = 0; i < particles.length; i++) {
     for (let j = i + 1; j < particles.length; j++) {
       const dx = particles[i].x - particles[j].x;
       const dy = particles[i].y - particles[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 120) {
+      const dist = dx * dx + dy * dy; // Avoid Math.sqrt for performance
+
+      if (dist < 10000) { // 100 squared
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(63, 87, 164, ${0.05 * (1 - dist / 120)})`;
+        ctx.strokeStyle = `rgba(63, 87, 164, ${0.05 * (1 - Math.sqrt(dist) / 100)})`;
         ctx.lineWidth = 0.5;
         ctx.moveTo(particles[i].x, particles[i].y);
         ctx.lineTo(particles[j].x, particles[j].y);
@@ -556,11 +573,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-// Hide cursor on mobile
-if ('ontouchstart' in window) {
-  dot.style.display = 'none';
-  ring.style.display = 'none';
-}
+
 </script>
 
 </body>

@@ -584,9 +584,12 @@ footer a:hover { color: var(--primary); }
 
 /* ===== SMOOTH SCROLL INDICATOR ===== */
 .scroll-indicator {
-  position: fixed; top: 0; left: 0;
-  height: 3px; background: linear-gradient(90deg, var(--primary), var(--tertiary), var(--secondary-light));
-  z-index: 100001; transition: width 0.05s linear;
+  position: fixed; top: 0; left: 0; height: 4px;
+  background: var(--glow-primary);
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: 100;
 }
 
 /* ===== TEXT GRADIENT ===== */
