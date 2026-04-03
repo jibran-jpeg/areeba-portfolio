@@ -983,3 +983,56 @@ a { text-decoration: none; color: inherit; }
   .hero-badge { opacity: 1 !important; }
   #cursorGlow { display: none; }
 }
+
+/* ===== SKILLS PANEL (GLASSMORPHISM) ===== */
+.skills-panel {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 36px;
+  border-radius: 24px;
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.skills-panel:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 2px 20px rgba(0,0,0,0.3), 0 0 40px rgba(138,43,226,0.05);
+}
+
+/* Subtle background glow for panels */
+.skills-panel::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -20%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, var(--glow-primary), transparent 70%);
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(40px);
+}
+
+.skills-panel.reveal-right::before {
+  left: -20%;
+  right: auto;
+  background: radial-gradient(circle, var(--glow-tertiary), transparent 70%);
+}
+
+.skills-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Enhance title glow within skills panels */
+.skills-panel .section-title {
+  text-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
+}
+
+.skills-panel.reveal-right .section-title {
+  text-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+}
