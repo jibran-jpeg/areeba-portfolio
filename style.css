@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,700;0,800;0,900;1,700&family=Manrope:wght@300;400;500;600;700;800&display=swap');
+/* Fonts loaded via <link> in HTML head — no duplicate @import needed */
 
 /* ===== CSS VARIABLES ===== */
 :root {
@@ -134,8 +134,8 @@ body {
   width: 88px; height: 88px;
   border-radius: 50%;
   padding: 3px;
-  background: conic-gradient(from 0deg, var(--primary), var(--secondary), var(--tertiary), var(--primary));
-  animation: ringRotate 6s linear infinite;
+  background: conic-gradient(from var(--ring-angle, 0deg), var(--primary), var(--secondary), var(--tertiary), var(--primary));
+  animation: ringRotate 4s linear infinite;
   box-shadow: 0 0 24px var(--glow-primary), 0 0 48px rgba(138,43,226,0.12);
   margin-bottom: 18px;
   transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
@@ -152,7 +152,29 @@ body {
   display: block;
 }
 @keyframes ringRotate {
-  to { background: conic-gradient(from 360deg, var(--primary), var(--secondary), var(--tertiary), var(--primary)); }
+  to { transform: rotate(360deg); }
+}
+
+/* Contact section avatar ring */
+.contact-avatar-ring {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  padding: 3px;
+  background: conic-gradient(from 0deg, var(--primary), var(--secondary), var(--tertiary), var(--primary));
+  animation: ringRotate 4s linear infinite;
+  box-shadow: 0 0 20px var(--glow-primary), 0 8px 24px rgba(0,0,0,0.5);
+  flex-shrink: 0;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.contact-avatar-ring:hover {
+  transform: scale(1.08);
+}
+.contact-avatar-ring img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--surface);
+  display: block;
 }
 
 /* Sidebar profile info */
@@ -484,17 +506,19 @@ body {
 .exp-card:nth-child(4) .exp-date { color: var(--secondary-light); }
 
 .tag {
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.08);
   padding: 5px 12px; border-radius: 99px;
-  font-size: 0.65rem; font-weight: 700;
-  color: var(--text-secondary);
-  border: 1px solid rgba(255,255,255,0.06);
+  font-size: 0.7rem; font-weight: 700;
+  color: #cbd5e1; /* improved contrast */
+  border: 1px solid rgba(255,255,255,0.08);
   transition: all 0.3s;
+  letter-spacing: 0.02em;
 }
 .tag:hover {
-  background: rgba(138,43,226,0.12);
+  background: rgba(138,43,226,0.15);
   border-color: var(--primary);
   color: var(--primary-light);
+  transform: translateY(-1px);
 }
 
 /* ===== SKILLS ===== */
@@ -537,9 +561,12 @@ body {
   width: 0;
   transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
+  box-shadow: none;
+}
+.progress-fill.animated {
+  width: var(--target-width);
   box-shadow: inset 0 2px 4px rgba(255,255,255,0.4), 0 0 16px var(--skill-c);
 }
-.progress-fill.animated { width: var(--target-width); }
 .progress-fill::after {
   content: '';
   position: absolute; right: -8px; top: 50%;
@@ -549,6 +576,11 @@ body {
   background: #fff;
   border: 5px solid var(--skill-c);
   box-shadow: 0 0 12px var(--skill-c), 0 0 8px rgba(255,255,255,0.8);
+  opacity: 0;
+  transition: opacity 0.3s 1.2s;
+}
+.progress-fill.animated::after {
+  opacity: 1;
   animation: pulseKnob 2s infinite ease-in-out;
 }
 @keyframes pulseKnob {
@@ -765,12 +797,42 @@ body {
 }
 
 /* ===== FOOTER ===== */
+footer {
+  position: relative;
+}
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 200px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), var(--tertiary), transparent);
+  border-radius: 2px;
+  opacity: 0.6;
+}
 footer a {
   color: var(--text-secondary);
   text-decoration: none; font-size: 0.85rem;
-  transition: color 0.3s;
+  transition: all 0.3s;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid transparent;
 }
-footer a:hover { color: var(--primary); }
+footer a:hover {
+  color: var(--primary-light);
+  background: rgba(138,43,226,0.08);
+  border-color: rgba(138,43,226,0.15);
+  transform: translateY(-2px);
+}
+.footer-heart {
+  display: inline-block;
+  animation: heartbeat 1.5s ease-in-out infinite;
+  color: var(--tertiary);
+}
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
 
 /* ===== MAGNETIC EFFECT ===== */
 .magnetic { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
@@ -822,7 +884,7 @@ footer a:hover { color: var(--primary); }
 }
 @media (max-width: 1023px) {
   .sidebar { display: none !important; }
-  .sidebar-layout { margin-left: 0; }
+  .sidebar-layout { margin-left: 0; padding-top: 70px !important; }
   .mobile-header, .mobile-nav { display: flex; }
 }
 
@@ -865,6 +927,8 @@ footer a:hover { color: var(--primary); }
   /* Experience */
   .exp-grid { grid-template-columns: 1fr; gap: 16px; }
   .exp-card { padding: 24px 24px 24px 28px; }
+  .exp-card ul { font-size: 0.82rem !important; line-height: 1.8 !important; }
+  .exp-card h3 { font-size: 1.05rem !important; }
 
   /* Skills */
   .skills-flex { flex-direction: column; gap: 28px; }
@@ -888,7 +952,7 @@ footer a:hover { color: var(--primary); }
   /* Contact */
   .contact-card { padding: 24px; border-radius: 24px; }
   .contact-inner { flex-direction: column; gap: 24px; text-align: center; }
-  .contact-inner > div:first-child { width: 100px; height: 100px; margin: 0 auto; }
+  .contact-avatar-ring { width: 100px; height: 100px; margin: 0 auto; }
   .contact-inner > div:last-child { min-width: unset; width: 100%; }
   .contact-inner > div:last-child > div { align-items: center; }
   .contact-inner h2 { font-size: 1.6rem !important; }
